@@ -72,7 +72,7 @@ JointStateListener::JointStateListener(const KDL::Tree& tree, const MimicMap& m,
   ros::TransportHints transport_hints;
   transport_hints.tcpNoDelay(true);
   // subscribe to joint state
-  joint_state_sub_ = n.subscribe("joint_states", 1, &JointStateListener::callbackJointState, this, transport_hints);
+  joint_state_sub_ = n.subscribe("joint_states", 10, &JointStateListener::callbackJointState, this, transport_hints);
 
   // trigger to publish fixed joints
   // if using static transform broadcaster, this will be a oneshot trigger and only run once
@@ -129,7 +129,7 @@ void JointStateListener::callbackJointState(const JointStateConstPtr& state)
   //       then last_published is zero.
 
   // check if we need to publish
-  if (ignore_timestamp_ || (state->header.stamp >= (last_published + publish_interval_))) {
+//  if (ignore_timestamp_ || (state->header.stamp >= (last_published + publish_interval_))) {
     // get joint positions from state message
     map<string, double> joint_positions;
     for (unsigned int i=0; i<state->name.size(); i++) {
@@ -149,7 +149,7 @@ void JointStateListener::callbackJointState(const JointStateConstPtr& state)
     for (unsigned int i = 0; i<state->name.size(); i++) {
       last_publish_time_[state->name[i]] = state->header.stamp;
     }
-  }
+//  }
 }
 
 // ----------------------------------
