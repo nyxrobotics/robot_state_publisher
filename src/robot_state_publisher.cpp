@@ -114,7 +114,7 @@ void RobotStatePublisher::publishFixedTransforms(const std::string& tf_prefix, b
     geometry_msgs::TransformStamped tf_transform = tf2::kdlToTransform(seg->second.segment.pose(0));
     tf_transform.header.stamp = ros::Time::now();
     if (!use_tf_static) {
-      tf_transform.header.stamp += ros::Duration(0.5);
+//      tf_transform.header.stamp += ros::Duration(0.5);
     }
     tf_transform.header.frame_id = tf::resolve(tf_prefix, seg->second.root);
     tf_transform.child_frame_id = tf::resolve(tf_prefix, seg->second.tip);
