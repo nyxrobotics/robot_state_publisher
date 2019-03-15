@@ -86,11 +86,12 @@ void RobotStatePublisher::publishTransforms(const map<string, double>& joint_pos
   std::vector<geometry_msgs::TransformStamped> tf_transforms;
 
   // loop over all joints
+  ros::Time time_now  = ros::Time::now();
   for (map<string, double>::const_iterator jnt=joint_positions.begin(); jnt != joint_positions.end(); jnt++) {
     std::map<std::string, SegmentPair>::const_iterator seg = segments_.find(jnt->first);
     if (seg != segments_.end()) {
       geometry_msgs::TransformStamped tf_transform = tf2::kdlToTransform(seg->second.segment.pose(jnt->second));
-      tf_transform.header.stamp = time;
+      tf_transform.header.stamp = time_now;//time;
       tf_transform.header.frame_id = tf::resolve(tf_prefix, seg->second.root);
       tf_transform.child_frame_id = tf::resolve(tf_prefix, seg->second.tip);
       tf_transforms.push_back(tf_transform);
@@ -116,6 +117,7 @@ void RobotStatePublisher::publishFixedTransforms(const std::string& tf_prefix, b
     if (!use_tf_static) {
 //      tf_transform.header.stamp += ros::Duration(0.5);
     }
+//    tf_transform.header.stamp = ros::Time(0);
     tf_transform.header.frame_id = tf::resolve(tf_prefix, seg->second.root);
     tf_transform.child_frame_id = tf::resolve(tf_prefix, seg->second.tip);
     tf_transforms.push_back(tf_transform);
