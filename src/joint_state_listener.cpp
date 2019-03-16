@@ -129,7 +129,7 @@ void JointStateListener::callbackJointState(const JointStateConstPtr& state)
   //       then last_published is zero.
 
   // check if we need to publish
-//  if (ignore_timestamp_ || (state->header.stamp >= (last_published + publish_interval_))) {
+  if (ignore_timestamp_ || (state->header.stamp >= (last_published + publish_interval_))) {
     // get joint positions from state message
     map<string, double> joint_positions;
     for (unsigned int i=0; i<state->name.size(); i++) {
@@ -149,7 +149,7 @@ void JointStateListener::callbackJointState(const JointStateConstPtr& state)
     for (unsigned int i = 0; i<state->name.size(); i++) {
       last_publish_time_[state->name[i]] = state->header.stamp;
     }
-//  }
+  }
 }
 
 // ----------------------------------
